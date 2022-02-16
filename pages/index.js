@@ -1,79 +1,43 @@
-import { Box, Button, Text, TextField, Image } from '@skynexui/components'
-import appConfig from '../config.json'
+import appConfig from '../config.json';
+import {Box, Button, Text, TextField, Image} from '@skynexui/components';
+import React from 'react';
+import {useRouter} from 'next//router';
 
-function GlobalStyle() {
-    return (
-        < style global jsx > {`
-      * {
-        margem: 0;
-        preenchimento: 0;
-        dimensionamento de caixa: caixa de borda;
-        estilo de lista: nenhum;
-      }
-      corpo {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* Altura de ajuste do aplicativo */ 
-      html, corpo, #__próximo {
-        min-altura: 100vh;
-        exibição: flexível;
-        flexível: 1;
-      }
-      #__Next {
-        flexível: 1;
-      }
-      #__próximo > * {
-        flexível: 1;
-      }
-      /* ./Altura de ajuste do aplicativo */ 
-    ` } </style>
-    );
-}
 
-function Titulo(props) {
-    console.log(props);
+function Titulo(props){
     const Tag = props.tag || 'h1';
-    return (
+    return(
         <>
             <Tag>{props.children}</Tag>
-            <style jsx>{`
-            ${Tag}{
-                color: ${appConfig.theme.colors.neutrals['000']};
-                font-size: 24px;
-                font-weight: 600;
-            }
-            `}</style>
+                <style jsx>
+                    {`
+                    ${Tag}{
+                        color:${appConfig.theme.colors.neutrals['000']};
+                        font-size:24px;
+                        font-family:sans-serif;
+                        font-weight:600;
+                    }
+                    `}
+                </style>
         </>
     );
 }
 
-//componente react
-// function HomePage() {
-//     //jsx
-//     return (
-//         <div>
-//             <GlobalStyle />
-//             <Titulo tag="h2"> Boas Vindas de Volta!</Titulo>
-//             <h2>Discord - Alura Matrix</h2>
-
-//         </div>
-
-//     )
-// }
-
-// export default HomePage
-
 export default function PaginaInicial() {
-    const username = 'SabrinaSoaresDev';
-
+    //const username = 'SabrinaSoaresDev';
+    const [username, setUsername] = React.useState('');
+    const roteamento = useRouter();
+    
     return (
         <>
-            <GlobalStyle />
+            
             <Box
                 styleSheet={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    backgroundColor: appConfig.theme.colors.primary[500],
-                    backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    //backgroundColor: appConfig.theme.colors.primary[500],
+                    backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/i-turn-coffee-into-code-plaque-1536x864.jpg)',
                     backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
                 }}
             >
@@ -95,17 +59,38 @@ export default function PaginaInicial() {
                     {/* Formulário */}
                     <Box
                         as="form"
+                        onSubmit={function(infosDoEvento){
+                            infosDoEvento.preventDefault();
+                            console.log("alguem submeteu o form");
+                            roteamento.push('/chat');
+                            //window.location.href='/chat';
+                        }}
                         styleSheet={{
-                            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                            width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
+                            display: 'flex', flexDirection: 'column', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            width: { xs: '100%', sm: '50%' }, 
+                            textAlign: 'center', 
+                            marginBottom: '32px',
                         }}
                     >
                         <Titulo tag="h2">Boas vindas de volta!</Titulo>
-                        <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+                        <Text variant="body3" 
+                        styleSheet={{ marginBottom: '32px', 
+                        color: appConfig.theme.colors.neutrals[300] }}>
                             {appConfig.name}
                         </Text>
 
                         <TextField
+                            value={username}
+                            onChange={function(event){
+                                console.log('usuario digitou', event.target.value); 
+                                //onde esta o valor?
+                                const valor = event.target.value;
+                                //trocar o valor da variavel
+                                //atraves do react e avisa quem precisa
+                                setUsername(valor); 
+                            }}
                             fullWidth
                             textFieldColors={{
                                 neutral: {
